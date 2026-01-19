@@ -25,6 +25,8 @@ orchidList.populate(
     sizeList
 );
 
+let header, main, footer;
+
 
 /**
  * @author Professor Rui Neves.
@@ -69,12 +71,70 @@ function createHeader() {
             "ul",
             {},
             toDom("li", {}, toDom("a", { href: "index.html" }, "Home")),
-            toDom("li", {}, toDom("a", { href: "#", id: "menu" }, "Menu")),
+            toDom(
+                "li",
+                {},
+                toDom(
+                    "a",
+                    {
+                        href: "#",
+                        id: "menu",
+                        onclick: (e) => {
+                            e.preventDefault();
+                            menu();
+                        }
+                    },
+                    "Menu")),
             toDom("li", {}, toDom("a", {}, "Share")),
             toDom("li"),
             toDom("li")
         )
     );
+}
+
+function createMain() {
+    // 1. Get the list of genus objects
+    let allGenus = genusList.getList;
+    let listLength = allGenus.length;
+    let toDomList = [];
+
+    for (let i = 0; i < listLength; i++) {
+        toDomList[i] = toDom(
+            "li",
+            {},
+            toDom(
+                "a",
+                { href: "index.html" },
+                toDom(
+                    "img",
+                    { src: `${allGenus[i].src}`, alt: allGenus[i].genus }
+                )
+            )
+        )
+    }
+
+    return toDom(
+        "main",
+        {},
+        toDom(
+            "section",
+            { className: "flowers" },
+            toDom(
+                "ul",
+                {},
+                ...toDomList
+            )
+        )
+    );
+}
+
+/**
+ * Remove todo o conteúdo de dentro do elemento <main>.
+ */
+function clearMain() {
+    if (main) {
+        main.innerHTML = "";
+    }
 }
 
 function createFooter() {
@@ -123,44 +183,83 @@ function createFooter() {
     );
 }
 
-function createMain() {
-    // 1. Get the list of genus objects
-    let allGenus = genusList.getList;
-    let listLength = allGenus.length;
+
+function menu() {
+    let menu = ["Data", "Genus", "Humidity", "Luminosity", "Orchid", "Size", "Temperature", "Type"];
+    let menuSize = menu.length;
     let toDomList = [];
 
-    for (let i = 0; i < listLength; i++) {
+    clearMain();
+
+    for (let i = 0; i < menuSize; i++) {
         toDomList[i] = toDom(
             "li",
             {},
             toDom(
                 "a",
-                { href: "index.html" },
-                toDom(
-                    "img",
-                    { src: `${allGenus[i].src}`, alt: allGenus[i].genus}
-                )
+                {
+                    href: "#",
+                    onclick: (e) => {
+                        e.preventDefault();
+                        menuOption(e.currentTarget.innerText);
+                    }
+                },
+                menu[i]
             )
-        )
+        );
     }
 
-    return toDom(
-        "main",
-        {},
+    menu = null;
+    menu = toDom(
+        "section",
+        { className: "flowers" },
         toDom(
-            "section",
-            { className: "flowers" },
-            toDom(
-                "ul",
-                {},
-                ...toDomList
-            )
+            "ul",
+            {},
+            ...toDomList
         )
-    );
+    )
+
+    main.append(menu);
 }
 
+function menuOption(option) {
+    switch (option) {
+        case "Data":
+            alert(option);
+            menuData();
+        case "Genus":
+            alert(option);
+            menuGenus();
+        case "Humidity":
+            alert(option);
+            menuHumidity();
+        case "Luminosity":
+            alert(option);
+            menuLuminosity();
+        case "Orchid":
+            alert(option);
+            menuOrchid();
+        case "Size":
+            alert(option);
+            menuSize();
+        case "Temperature":
+            alert(option);
+            menuTemperature();
+        case "Type":
+            alert(option);
+            menuType();
+        default: alert("That is not an option!");
+    }
+}
+
+/*to do
+function search(){}
+function create(){}
+function delete(){}
+function edit(){}
+*/
+
 window.onload = () => {
-    document.body.append(createHeader(), createMain(), createFooter());
-
-
+    document.body.append(header = createHeader(), main = createMain(), footer = createFooter());
 };
