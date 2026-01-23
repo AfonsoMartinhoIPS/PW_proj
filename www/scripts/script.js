@@ -1,63 +1,12 @@
 "use strict"
 
-import { GenusList } from './orchids/genus.js';
-import { TypeList } from './orchids/type.js';
-import { LuminosityList } from './orchids/luminosity.js';
-import { TemperatureList } from './orchids/temperature.js';
-import { HumidityList } from './orchids/humidity.js';
-import { SizeList } from './orchids/size.js';
-import { OrchidList } from './orchids/orchid.js';
+import {MenuGenus} from './ui/menus/MenuGenus.js'
 
-let genusList = new GenusList();
-let typeList = new TypeList();
-let luminosityList = new LuminosityList();
-let temperatureList = new TemperatureList();
-let humidityList = new HumidityList();
-let sizeList = new SizeList();
-let orchidList = new OrchidList();
-
-orchidList.populate(
-    genusList,
-    typeList,
-    luminosityList,
-    temperatureList,
-    humidityList,
-    sizeList
-);
-
+import {toDom} from './utils/toDom.js'
+import { MenuControl } from './MenuControl.js';
 let header, main, footer;
 
-
-/**
- * @author Professor Rui Neves.
- * Creates, using the Node and HTMLElement interface, an HTML element
- * @param {string|Array} tag - HTML tag or an array to be converted to DOM
- * @param {Object|string} [attributes] - attributes of the element, if it is a string it will be "styles"
- * @param {Array.<HTMLElement|string>} children - children of the element
- * @returns {HTMLElement} HTML element created
- */
-function toDom(tag, attributes = {}, ...children) {
-    let result;
-    if (Array.isArray(tag)) {
-        result = toDom(...tag);
-    } else {
-        result = document.createElement(tag);
-        if (typeof attributes === "string") {
-            result.style.cssText = attributes;
-        } else {
-            let style = attributes.style || {};
-            delete attributes.style;
-            Object.assign(result, attributes);
-            if (typeof style === "string") {
-                result.style.cssText = style;
-            } else {
-                Object.assign(result.style, style);
-            }
-        }
-        children.forEach((child) => child && result.append(Array.isArray(child) ? toDom(...child) : child));
-    }
-    return result;
-}
+let menu = null;
 
 /**
  * Creates the entire <header> element structure.
@@ -81,7 +30,8 @@ function createHeader() {
                         id: "menu",
                         onclick: (e) => {
                             e.preventDefault();
-                            menu();
+                            clearMain();
+                            menu.showMenuList();
                         }
                     },
                     "Menu")),
@@ -93,38 +43,11 @@ function createHeader() {
 }
 
 function createMain() {
-    // 1. Get the list of genus objects
-    let allGenus = genusList.getList;
-    let listLength = allGenus.length;
-    let toDomList = [];
 
-    for (let i = 0; i < listLength; i++) {
-        toDomList[i] = toDom(
-            "li",
-            {},
-            toDom(
-                "a",
-                { href: "index.html" },
-                toDom(
-                    "img",
-                    { src: `${allGenus[i].src}`, alt: allGenus[i].genus }
-                )
-            )
-        )
-    }
 
     return toDom(
         "main",
-        {},
-        toDom(
-            "section",
-            { className: "flowers" },
-            toDom(
-                "ul",
-                {},
-                ...toDomList
-            )
-        )
+        {}
     );
 }
 
@@ -183,76 +106,6 @@ function createFooter() {
     );
 }
 
-
-function menu() {
-    let menu = ["Data", "Genus", "Humidity", "Luminosity", "Orchid", "Size", "Temperature", "Type"];
-    let menuSize = menu.length;
-    let toDomList = [];
-
-    clearMain();
-
-    for (let i = 0; i < menuSize; i++) {
-        toDomList[i] = toDom(
-            "li",
-            {},
-            toDom(
-                "a",
-                {
-                    href: "#",
-                    onclick: (e) => {
-                        e.preventDefault();
-                        menuOption(e.currentTarget.innerText);
-                    }
-                },
-                menu[i]
-            )
-        );
-    }
-
-    menu = null;
-    menu = toDom(
-        "section",
-        { className: "flowers" },
-        toDom(
-            "ul",
-            {},
-            ...toDomList
-        )
-    )
-
-    main.append(menu);
-}
-
-function menuOption(option) {
-    switch (option) {
-        case "Data":
-            alert(option);
-            menuData();
-        case "Genus":
-            alert(option);
-            menuGenus();
-        case "Humidity":
-            alert(option);
-            menuHumidity();
-        case "Luminosity":
-            alert(option);
-            menuLuminosity();
-        case "Orchid":
-            alert(option);
-            menuOrchid();
-        case "Size":
-            alert(option);
-            menuSize();
-        case "Temperature":
-            alert(option);
-            menuTemperature();
-        case "Type":
-            alert(option);
-            menuType();
-        default: alert("That is not an option!");
-    }
-}
-
 /*to do
 function search(){}
 function create(){}
@@ -262,4 +115,6 @@ function edit(){}
 
 window.onload = () => {
     document.body.append(header = createHeader(), main = createMain(), footer = createFooter());
+
+    menu = new MenuControl(main);
 };

@@ -1,6 +1,6 @@
 "use strict"
 
-import { data } from './data.js';
+import { data } from '../utils/data.js';
 
 export class HumidityList {
     #list;
@@ -41,6 +41,25 @@ export class HumidityList {
         }
     }
 
+    getOrderedList(text, order) {
+        let filteredList = this.#list.filter(item =>
+            item.humidity.toLowerCase().includes(text.toLowerCase())
+        );
+
+        filteredList.sort((a, b) => {
+            const nameA = a.humidity.toLowerCase();
+            const nameB = b.humidity.toLowerCase();
+
+            if (order === "asc") {
+                return nameA.localeCompare(nameB);
+            } else if (order === "desc") {
+                return nameB.localeCompare(nameA);
+            }
+            return 0;
+        });
+
+        return filteredList;
+    }
 
 }
 

@@ -1,6 +1,6 @@
 "use strict"
 
-import { data } from './data.js';
+import { data } from '../utils/data.js';
 
 import { GenusList } from './genus.js';
 import { TypeList } from './type.js';
@@ -49,7 +49,7 @@ export class OrchidList {
         return this.#list.slice();
     }
 
-    getLuminosity(id) {
+    getOrchid(id) {
         let listLength = this.#list.length;
         for (let i = 0; i < listLength; i++) {
             if (this.#list[i].id === id) {
@@ -79,6 +79,25 @@ export class OrchidList {
         }
     }
 
+    getOrderedList(text, order) {
+        let filteredList = this.#list.filter(item =>
+            item.description.toLowerCase().includes(text.toLowerCase())
+        );
+
+        filteredList.sort((a, b) => {
+            const nameA = a.description.toLowerCase();
+            const nameB = b.description.toLowerCase();
+
+            if (order === "asc") {
+                return nameA.localeCompare(nameB);
+            } else if (order === "desc") {
+                return nameB.localeCompare(nameA);
+            }
+            return 0;
+        });
+
+        return filteredList;
+    }
 }
 
 export class Orchid {

@@ -1,6 +1,6 @@
 "use strict";
 
-import { data } from './data.js';
+import { data } from '../utils/data.js';
 
 export class TypeList {
     #list;
@@ -39,6 +39,26 @@ export class TypeList {
         for (let i = 0; i < 2; i++) {
             this.add(data.type[i].description);
         }
+    }
+
+    getOrderedList(text, order) {
+        let filteredList = this.#list.filter(item =>
+            item.type.toLowerCase().includes(text.toLowerCase())
+        );
+
+        filteredList.sort((a, b) => {
+            const nameA = a.type.toLowerCase();
+            const nameB = b.type.toLowerCase();
+
+            if (order === "asc") {
+                return nameA.localeCompare(nameB);
+            } else if (order === "desc") {
+                return nameB.localeCompare(nameA);
+            }
+            return 0;
+        });
+
+        return filteredList;
     }
 }
 

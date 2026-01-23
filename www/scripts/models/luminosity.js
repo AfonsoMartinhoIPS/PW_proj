@@ -1,6 +1,6 @@
 "use strict"
 
-import { data } from './data.js';
+import { data } from '../utils/data.js';
 
 export class LuminosityList {
     #list;
@@ -39,6 +39,26 @@ export class LuminosityList {
         for (let i = 0; i < 4; i++) {
             this.add(data.luminosity[i].description);
         }
+    }
+
+    getOrderedList(text, order) {
+        let filteredList = this.#list.filter(item =>
+            item.luminosity.toLowerCase().includes(text.toLowerCase())
+        );
+
+        filteredList.sort((a, b) => {
+            const nameA = a.luminosity.toLowerCase();
+            const nameB = b.luminosity.toLowerCase();
+
+            if (order === "asc") {
+                return nameA.localeCompare(nameB);
+            } else if (order === "desc") {
+                return nameB.localeCompare(nameA);
+            }
+            return 0;
+        });
+
+        return filteredList;
     }
 
 }
