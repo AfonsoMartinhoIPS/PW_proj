@@ -72,6 +72,10 @@ export class Humity {
         this.#description = description;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get humidity() {
         return this.#description;
     }

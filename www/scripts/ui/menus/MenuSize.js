@@ -1,7 +1,7 @@
 import { toDom } from '../../utils/toDom.js';
 import { Menu } from './Menu.js';
 
-export class MenuGenus extends Menu {
+export class MenuSize extends Menu {
     constructor(instanceList) {
         super(instanceList)
     }
@@ -15,7 +15,7 @@ export class MenuGenus extends Menu {
                 toDom(
                     "span",
                     { id: `${resultsList[i].id}` },
-                    `${resultsList[i].genus}`
+                    `${resultsList[i].size}`
                 )
             )
         }

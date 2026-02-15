@@ -29,8 +29,29 @@ export function toDom(tag, attributes = {}, ...children) {
     return result;
 }
 
-export function clearSection(section){
+export function clearSection(section) {
     if (section) {
         section.innerHTML = "";
     }
+}
+
+export function dropDown(list, listName) {
+    let listSize = list.length;
+
+    let id = listName.toLowerCase();
+
+    let container = toDom("div", { id: `${listName}` });
+
+    let dropDownList = toDom("select", { id: id, name: id });
+
+    for (let i = 0; i < listSize; i++) {
+        dropDownList.appendChild(
+            toDom("option", { value: `${list[i].id}` }, `${list[i].description}`)
+        );
+    }
+
+    container.appendChild(toDom("label", {htmlFor: id , name: `${listName}`}, `${listName}:`));
+    container.appendChild(dropDownList);
+
+    return container;
 }

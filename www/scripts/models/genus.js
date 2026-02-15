@@ -81,6 +81,10 @@ export class Genus {
         return this.#id;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get genus() {
         return this.#description;
     }

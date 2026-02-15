@@ -71,6 +71,10 @@ class Size {
         this.#description = description;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get size() {
         return this.#description;
     }

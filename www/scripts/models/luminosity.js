@@ -72,6 +72,10 @@ export class Luminosity {
         this.#description = description;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get luminosity() {
         return this.#description;
     }

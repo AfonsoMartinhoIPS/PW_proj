@@ -71,6 +71,10 @@ export class Temperature {
         this.#description = description;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get temperature() {
         return this.#description;
     }

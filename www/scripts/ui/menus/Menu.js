@@ -1,15 +1,17 @@
 import { clearSection, toDom } from '../../utils/toDom.js';
 
 export class Menu {
-    #listInstance;
-    #controller;
+    _listInstance;
+    _controller;
 
     constructor(listInstance = [], controller = null) {
-        this.#listInstance = listInstance;
-        this.#controller = controller;
+        this._listInstance = listInstance;
+        this._controller = controller;
     }
 
     showMenuList(section) {
+        clearSection(section);
+
         let menu = ["Genus", "Humidity", "Luminosity", "Orchid", "Size", "Temperature", "Type"];
         let menuSize = menu.length;
         let toDomList = [];
@@ -24,7 +26,7 @@ export class Menu {
                         href: "#",
                         onclick: (e) => {
                             e.preventDefault();
-                            this.#controller.menuOption(e.currentTarget.innerText);
+                            this._controller.menuOption(e.currentTarget.innerText);
                         }
                     },
                     menu[i]
@@ -48,7 +50,7 @@ export class Menu {
     menuLayout() {
         return toDom(
             "section",
-            { id: `menu-${this.#listInstance.constructor.name}` },
+            { id: `menu-${this._listInstance.constructor.name}` },
             toDom(
                 "section",
                 { id: "search-section" }
@@ -118,14 +120,14 @@ export class Menu {
         let orderList = document.getElementsByName("radio");
 
         if (orderList[0].checked) {
-            return this.#listInstance.getOrderedList(document.getElementById("search-input").value, orderList[0].value);
+            return this._listInstance.getOrderedList(document.getElementById("search-input").value, orderList[0].value);
         } else {
-            return this.#listInstance.getOrderedList(document.getElementById("search-input").value, orderList[1].value);
+            return this._listInstance.getOrderedList(document.getElementById("search-input").value, orderList[1].value);
         }
     }
 
-    search(){
-        this.showResults(this.searchResults());
+    search(menuSection) {
+        this.showResults(this.searchResults(), menuSection);
     }
 
     showMenu(section) {

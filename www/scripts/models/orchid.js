@@ -53,7 +53,7 @@ export class OrchidList {
         let listLength = this.#list.length;
         for (let i = 0; i < listLength; i++) {
             if (this.#list[i].id === id) {
-                return this.#list.id;
+                return this.#list[i];
             }
         }
     }

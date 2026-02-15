@@ -71,6 +71,10 @@ export class Type {
         this.#description = description;
     }
 
+    get description(){
+        return this.#description;
+    }
+
     get type() {
         return this.#description;
     }
